@@ -2,3 +2,6 @@
 VoucherSystem/VoucherSystem.API/obj
 VoucherSystem/VoucherSystem.API/bin
 VoucherSystem/VoucherSystem.ProviderIntegration/obj
+VoucherSystem/VoucherSystem.ProviderIntegration/bin
+VoucherSystem/VoucherSystem.Shared/bin
+VoucherSystem/VoucherSystem.Shared/obj

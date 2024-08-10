@@ -1,6 +1,5 @@
 ﻿using MongoDB.Driver;
-using VoucherSystem.ProviderIntegration.DTOs;
-using VoucherSystem.ProviderIntegration.Models;
+using VoucherSystem.Shared.DTOs;
 
 namespace VoucherSystem.ProviderIntegration.Data;
 
@@ -13,9 +12,9 @@ public static class MongoDbInitializer
         {
             var vouchers = new List<VoucherDto>
             {
-                new VoucherDto { Name = "10% Off", Value = 10, Amount = 100 },
-                new VoucherDto { Name = "20% Off", Value = 20, Amount = 50 },
-                new VoucherDto { Name = "5 EUR Off", Value = 5, Amount = 200 }
+                new VoucherDto { Id = 1, Name = "10% Off", Value = 10, Amount = 100 },
+                new VoucherDto { Id = 2, Name = "20% Off", Value = 20, Amount = 50 },
+                new VoucherDto { Id = 3, Name = "5 EUR Off", Value = 5, Amount = 200 }
             };
             await collection.InsertManyAsync(vouchers);
         }

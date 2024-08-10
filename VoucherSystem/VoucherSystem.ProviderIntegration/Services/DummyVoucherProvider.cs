@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
-using VoucherSystem.ProviderIntegration.DTOs;
 using VoucherSystem.ProviderIntegration.Interfaces;
+using VoucherSystem.Shared.DTOs;
 
 namespace VoucherSystem.ProviderIntegration.Services;
 

@@ -1,4 +1,4 @@
-﻿namespace VoucherSystem.ProviderIntegration.DTOs;
+﻿namespace VoucherSystem.Shared.DTOs;
 
 public class VoucherDto
 {

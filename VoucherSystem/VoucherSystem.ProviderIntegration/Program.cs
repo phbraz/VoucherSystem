@@ -6,6 +6,7 @@ using VoucherSystem.ProviderIntegration.Consumers;
 using VoucherSystem.ProviderIntegration.Data;
 using VoucherSystem.ProviderIntegration.Interfaces;
 using VoucherSystem.ProviderIntegration.Services;
+using VoucherSystem.Shared.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,24 +14,21 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-var app = builder.Build();
-
 var mongoSettings = builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>();
 builder.Services.AddSingleton<IMongoDatabase>(sp => 
 {
     var client = new MongoClient(mongoSettings.ConnectionString);
     return client.GetDatabase(mongoSettings.DatabaseName);
 });
+builder.Services.AddSingleton<IMongoCollection<VoucherDto>>(sp =>
+{
+    var client = new MongoClient(mongoSettings.ConnectionString);
+    var database = client.GetDatabase(mongoSettings.DatabaseName);
+    return database.GetCollection<VoucherDto>("Vouchers");
+});
 
 builder.Services.AddScoped<IVoucherProvider, DummyVoucherProvider>();
-
-
-using (var scope = app.Services.CreateScope())
-{
-    var database = scope.ServiceProvider.GetRequiredService<IMongoDatabase>();
-    await MongoDbInitializer.SeedData(database);
-}
-
+builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQ"));
 
 builder.Services.AddMassTransit(x =>
 {
@@ -44,8 +42,22 @@ builder.Services.AddMassTransit(x =>
             h.Username(rabbitMQSettings.UserName);
             h.Password(rabbitMQSettings.Password);
         });
+        
+        cfg.ReceiveEndpoint("vouchers", e =>
+        {
+            e.UseMessageRetry(r => r.Interval(5,5));
+            e.ConfigureConsumer<ListVouchersConsumer>(context);
+        });
     });
 });
+
+var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var database = scope.ServiceProvider.GetRequiredService<IMongoDatabase>();
+    await MongoDbInitializer.SeedData(database);
+}
 
 
 // Configure the HTTP request pipeline.

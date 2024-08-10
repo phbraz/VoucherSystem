@@ -1,9 +1,9 @@
 using MassTransit;
 using Microsoft.Extensions.Options;
 using VoucherSystem.API.Configuration;
-using VoucherSystem.API.Messages;
 using VoucherSystem.API.Services;
 using VoucherSystem.API.Services.Interfaces;
+using VoucherSystem.Shared.Messages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,10 +29,10 @@ builder.Services.AddMassTransit(x =>
     });
 
     // Register request clients
-    x.AddRequestClient<VoucherMessages.ListVouchersRequest>();
-    x.AddRequestClient<VoucherMessages.SelectVoucherRequest>();
-    x.AddRequestClient<VoucherMessages.AddToCartRequest>();
-    x.AddRequestClient<VoucherMessages.CheckoutRequest>();
+    x.AddRequestClient<ListVoucherMessages.ListVouchersRequest>();
+    x.AddRequestClient<SelectVoucherMessage.SelectVoucherRequest>();
+    x.AddRequestClient<AddToCartMessage.AddToCartRequest>();
+    x.AddRequestClient<CheckoutMessage.CheckoutRequest>();
 });
 
 var app = builder.Build();

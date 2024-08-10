@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VoucherSystem.API.DTOs;
 using VoucherSystem.API.Models;
 using VoucherSystem.API.Services.Interfaces;
+using VoucherSystem.Shared.DTOs;
 
 namespace VoucherSystem.API.Controllers;
 

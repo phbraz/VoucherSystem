@@ -1,4 +1,4 @@
-﻿using VoucherSystem.API.DTOs;
+﻿using VoucherSystem.Shared.DTOs;
 
 namespace VoucherSystem.API.Services.Interfaces;
 

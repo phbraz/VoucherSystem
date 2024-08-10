@@ -14,4 +14,12 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Messages\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\VoucherSystem.Shared\VoucherSystem.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

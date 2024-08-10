@@ -1,22 +1,22 @@
 ﻿using MassTransit;
-using VoucherSystem.API.DTOs;
-using VoucherSystem.API.Messages;
 using VoucherSystem.API.Services.Interfaces;
+using VoucherSystem.Shared.DTOs;
+using VoucherSystem.Shared.Messages;
 
 namespace VoucherSystem.API.Services;
 
 public class VoucherService : IVoucherService
 {
-    private readonly IRequestClient<VoucherMessages.ListVouchersRequest> _listVouchersClient;
-    private readonly IRequestClient<VoucherMessages.SelectVoucherRequest> _selectVoucherClient;
-    private readonly IRequestClient<VoucherMessages.AddToCartRequest> _addToCartClient;
-    private readonly IRequestClient<VoucherMessages.CheckoutRequest> _checkoutClient;
+    private readonly IRequestClient<ListVoucherMessages.ListVouchersRequest> _listVouchersClient;
+    private readonly IRequestClient<SelectVoucherMessage.SelectVoucherRequest> _selectVoucherClient;
+    private readonly IRequestClient<AddToCartMessage.AddToCartRequest> _addToCartClient;
+    private readonly IRequestClient<CheckoutMessage.CheckoutRequest> _checkoutClient;
 
     public VoucherService(
-        IRequestClient<VoucherMessages.ListVouchersRequest> listVouchersClient,
-        IRequestClient<VoucherMessages.SelectVoucherRequest> selectVoucherClient,
-        IRequestClient<VoucherMessages.AddToCartRequest> addToCartClient,
-        IRequestClient<VoucherMessages.CheckoutRequest> checkoutClient)
+        IRequestClient<ListVoucherMessages.ListVouchersRequest> listVouchersClient,
+        IRequestClient<SelectVoucherMessage.SelectVoucherRequest> selectVoucherClient,
+        IRequestClient<AddToCartMessage.AddToCartRequest> addToCartClient,
+        IRequestClient<CheckoutMessage.CheckoutRequest> checkoutClient)
     {
         _listVouchersClient = listVouchersClient;
         _selectVoucherClient = selectVoucherClient;
@@ -26,23 +26,23 @@ public class VoucherService : IVoucherService
     
     public async Task<IEnumerable<VoucherDto>> ListVouchers()
     {
-        var response = await _listVouchersClient.GetResponse<VoucherMessages.ListVouchersResponse>(new VoucherMessages.ListVouchersRequest());
+        var response = await _listVouchersClient.GetResponse<ListVoucherMessages.ListVouchersResponse>(new ListVoucherMessages.ListVouchersRequest());
         return response.Message.Vouchers;
     }
 
     public async Task<VoucherDto> SelectVoucherAndAmount(int voucherId, int amount)
     {
-        var response = await _selectVoucherClient.GetResponse<VoucherMessages.SelectVoucherResponse>(new VoucherMessages.SelectVoucherRequest(voucherId, amount));
+        var response = await _selectVoucherClient.GetResponse<SelectVoucherMessage.SelectVoucherResponse>(new SelectVoucherMessage.SelectVoucherRequest(voucherId, amount));
         return response.Message.SelectedVoucher;
     }
 
     public async Task AddToCart(int voucherId, int amount)
     {
-        await _addToCartClient.GetResponse<VoucherMessages.AddToCartResponse>(new VoucherMessages.AddToCartRequest(voucherId, amount));
+        await _addToCartClient.GetResponse<AddToCartMessage.AddToCartResponse>(new AddToCartMessage.AddToCartRequest(voucherId, amount));
     }
 
     public async Task Checkout(int cartId)
     {
-        await _checkoutClient.GetResponse<VoucherMessages.CheckoutResponse>(new VoucherMessages.CheckoutRequest(cartId));
+        await _checkoutClient.GetResponse<CheckoutMessage.CheckoutResponse>(new CheckoutMessage.CheckoutRequest(cartId));
     }
 }

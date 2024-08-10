@@ -1,4 +1,4 @@
-﻿using VoucherSystem.ProviderIntegration.DTOs;
+﻿using VoucherSystem.Shared.DTOs;
 
 namespace VoucherSystem.ProviderIntegration.Interfaces;
 
