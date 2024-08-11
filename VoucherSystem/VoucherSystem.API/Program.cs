@@ -31,7 +31,6 @@ builder.Services.AddMassTransit(x =>
     // Register request clients
     x.AddRequestClient<ListVoucherMessages.ListVouchersRequest>();
     x.AddRequestClient<SelectVoucherMessage.SelectVoucherRequest>();
-    x.AddRequestClient<AddToCartMessage.AddToCartRequest>();
     x.AddRequestClient<CheckoutMessage.CheckoutRequest>();
 });
 

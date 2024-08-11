@@ -9,18 +9,15 @@ public class VoucherService : IVoucherService
 {
     private readonly IRequestClient<ListVoucherMessages.ListVouchersRequest> _listVouchersClient;
     private readonly IRequestClient<SelectVoucherMessage.SelectVoucherRequest> _selectVoucherClient;
-    private readonly IRequestClient<AddToCartMessage.AddToCartRequest> _addToCartClient;
     private readonly IRequestClient<CheckoutMessage.CheckoutRequest> _checkoutClient;
 
     public VoucherService(
         IRequestClient<ListVoucherMessages.ListVouchersRequest> listVouchersClient,
         IRequestClient<SelectVoucherMessage.SelectVoucherRequest> selectVoucherClient,
-        IRequestClient<AddToCartMessage.AddToCartRequest> addToCartClient,
         IRequestClient<CheckoutMessage.CheckoutRequest> checkoutClient)
     {
         _listVouchersClient = listVouchersClient;
         _selectVoucherClient = selectVoucherClient;
-        _addToCartClient = addToCartClient;
         _checkoutClient = checkoutClient;
     }
     
@@ -34,11 +31,6 @@ public class VoucherService : IVoucherService
     {
         var response = await _selectVoucherClient.GetResponse<SelectVoucherMessage.SelectVoucherResponse>(new SelectVoucherMessage.SelectVoucherRequest(voucherId, amount));
         return response.Message.SelectedVoucher;
-    }
-
-    public async Task AddToCart(int voucherId, int amount)
-    {
-        await _addToCartClient.GetResponse<AddToCartMessage.AddToCartResponse>(new AddToCartMessage.AddToCartRequest(voucherId, amount));
     }
 
     public async Task Checkout(int cartId)

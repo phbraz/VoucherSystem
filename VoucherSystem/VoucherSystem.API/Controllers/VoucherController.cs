@@ -30,13 +30,6 @@ public class VoucherController : ControllerBase
         return Ok(selectedVoucher);
     }
 
-    [HttpPost("addToCart")]
-    public async Task<ActionResult> AddToCart([FromBody] ApiModels.AddToCartRequest request)
-    {
-        await _voucherService.AddToCart(request.VoucherId, request.Amount);
-        return Ok();
-    }
-
     [HttpPost("checkout")]
     public async Task<ActionResult> Checkout([FromBody] ApiModels.CheckoutRequest request)
     {

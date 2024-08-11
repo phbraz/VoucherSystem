@@ -5,6 +5,7 @@ using VoucherSystem.ProviderIntegration.Configuration;
 using VoucherSystem.ProviderIntegration.Consumers;
 using VoucherSystem.ProviderIntegration.Data;
 using VoucherSystem.ProviderIntegration.Interfaces;
+using VoucherSystem.ProviderIntegration.Models;
 using VoucherSystem.ProviderIntegration.Services;
 using VoucherSystem.Shared.DTOs;
 
@@ -26,6 +27,12 @@ builder.Services.AddSingleton<IMongoCollection<VoucherDto>>(sp =>
     var database = client.GetDatabase(mongoSettings.DatabaseName);
     return database.GetCollection<VoucherDto>("Vouchers");
 });
+builder.Services.AddSingleton<IMongoCollection<Cart>>(sp =>
+{
+    var client = new MongoClient(mongoSettings.ConnectionString);
+    var database = client.GetDatabase(mongoSettings.DatabaseName);
+    return database.GetCollection<Cart>("Carts");
+});
 
 builder.Services.AddScoped<IVoucherProvider, DummyVoucherProvider>();
 builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQ"));
@@ -34,6 +41,7 @@ builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<ListVouchersConsumer>();
     x.AddConsumer<SelectVoucherConsumer>();
+    x.AddConsumer<CheckoutConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
         var rabbitMQSettings = context.GetRequiredService<IOptions<RabbitMQSettings>>().Value;
@@ -54,6 +62,12 @@ builder.Services.AddMassTransit(x =>
         {
             e.UseMessageRetry(r => r.Interval(5,5));
             e.ConfigureConsumer<SelectVoucherConsumer>(context);
+        });
+        
+        cfg.ReceiveEndpoint("checkout", e =>
+        {
+            e.UseMessageRetry(r => r.Interval(5,5));
+            e.ConfigureConsumer<CheckoutConsumer>(context);
         });
     });
 });

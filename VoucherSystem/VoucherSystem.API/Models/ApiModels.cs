@@ -10,12 +10,6 @@ public class ApiModels
         public int Amount { get; set; }
     }
 
-    public class AddToCartRequest
-    {
-        public int VoucherId { get; set; }
-        public int Amount { get; set; }
-    }
-
     public class CheckoutRequest
     {
         public int CartId { get; set; }

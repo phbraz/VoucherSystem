@@ -1,5 +1,7 @@
 ﻿using MongoDB.Driver;
+using VoucherSystem.ProviderIntegration.Models;
 using VoucherSystem.Shared.DTOs;
+using VoucherSystem.Shared.Enums;
 
 namespace VoucherSystem.ProviderIntegration.Data;
 
