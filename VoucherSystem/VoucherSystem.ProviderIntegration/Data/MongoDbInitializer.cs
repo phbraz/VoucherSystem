@@ -14,7 +14,7 @@ public static class MongoDbInitializer
             {
                 new VoucherDto { Id = 1, Name = "10% Off", Value = 10, Amount = 100 },
                 new VoucherDto { Id = 2, Name = "20% Off", Value = 20, Amount = 50 },
-                new VoucherDto { Id = 3, Name = "5 EUR Off", Value = 5, Amount = 200 }
+                new VoucherDto { Id = 3, Name = "5% off", Value = 5, Amount = 200 }
             };
             await collection.InsertManyAsync(vouchers);
         }

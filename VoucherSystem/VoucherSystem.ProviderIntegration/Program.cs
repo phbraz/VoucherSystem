@@ -33,6 +33,7 @@ builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("R
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<ListVouchersConsumer>();
+    x.AddConsumer<SelectVoucherConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
         var rabbitMQSettings = context.GetRequiredService<IOptions<RabbitMQSettings>>().Value;
@@ -47,6 +48,12 @@ builder.Services.AddMassTransit(x =>
         {
             e.UseMessageRetry(r => r.Interval(5,5));
             e.ConfigureConsumer<ListVouchersConsumer>(context);
+        });
+        
+        cfg.ReceiveEndpoint("select", e =>
+        {
+            e.UseMessageRetry(r => r.Interval(5,5));
+            e.ConfigureConsumer<SelectVoucherConsumer>(context);
         });
     });
 });

@@ -15,10 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Messages\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\VoucherSystem.Shared\VoucherSystem.Shared.csproj" />
     </ItemGroup>
 

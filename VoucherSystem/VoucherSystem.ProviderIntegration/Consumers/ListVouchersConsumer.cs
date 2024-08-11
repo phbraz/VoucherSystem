@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using MongoDB.Driver;
+using VoucherSystem.ProviderIntegration.Interfaces;
 using VoucherSystem.Shared.DTOs;
 using VoucherSystem.Shared.Messages;
 
@@ -7,21 +8,19 @@ namespace VoucherSystem.ProviderIntegration.Consumers;
 
 public class ListVouchersConsumer : IConsumer<ListVoucherMessages.ListVouchersRequest>
 {
-    private readonly IMongoCollection<VoucherDto> _voucherCollection;
+    private readonly IVoucherProvider _voucherProvider;
 
-    public ListVouchersConsumer(IMongoCollection<VoucherDto> voucherCollection)
+    public ListVouchersConsumer(IVoucherProvider voucherProvider)
     {
-        _voucherCollection = voucherCollection;
+        _voucherProvider = voucherProvider;
     }
     
     public async Task Consume(ConsumeContext<ListVoucherMessages.ListVouchersRequest> context)
     {
         Console.WriteLine("--> Consuming ListOfVouchers");
 
-        var vouchers = await _voucherCollection.Find(Builders<VoucherDto>.Filter.Empty).ToListAsync();
+        var vouchers = await _voucherProvider.ListVouchersAsync();
 
-        var result = new ListVoucherMessages.ListVouchersResponse(vouchers);
-
-        await context.RespondAsync(result);
+        await context.RespondAsync(vouchers);
     }
 }
