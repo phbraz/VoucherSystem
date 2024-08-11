@@ -74,7 +74,7 @@ public class DummyVoucherProvider : IVoucherProvider
     }
 
     //again I'm not adding identity to this project hence we are hard coding the userid
-    public async Task<bool> CheckoutAsync()
+    public async Task<CheckoutMessage.CheckoutResponse> CheckoutAsync()
     {
         var cartItems = await _carts.Find(c => c.UserId == 1 && c.Status == CartStatus.InProgress)
             .FirstOrDefaultAsync();
@@ -86,13 +86,13 @@ public class DummyVoucherProvider : IVoucherProvider
                 c => c.UserId == 1 && c.Status == CartStatus.InProgress,
                 update);
 
-            return true;
+            return new CheckoutMessage.CheckoutResponse(true);
             //here we can add additional tasks? i.e: Send confirmation email, Generate Order ID, And so on. 
         }
         else
         {
             //we do not have a cart items then we can't checkout.
-            return false;
+            return new CheckoutMessage.CheckoutResponse(false);
         }
     }
 }

@@ -12,6 +12,5 @@ public class ApiModels
 
     public class CheckoutRequest
     {
-        public int CartId { get; set; }
     }
 }

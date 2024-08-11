@@ -2,7 +2,7 @@
 
 public class CheckoutMessage
 {
-    public record CheckoutRequest(int CartId);
+    public record CheckoutRequest();
 
     public record CheckoutResponse(bool Success);
 }

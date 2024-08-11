@@ -33,8 +33,8 @@ public class VoucherController : ControllerBase
     [HttpPost("checkout")]
     public async Task<ActionResult> Checkout([FromBody] ApiModels.CheckoutRequest request)
     {
-        await _voucherService.Checkout(request.CartId);
-        return Ok();
+        var isCheckoutComplete = await _voucherService.Checkout();
+        return isCheckoutComplete ? Ok() : BadRequest("Your cart might be empty or something went wrong");
     }
     
 }

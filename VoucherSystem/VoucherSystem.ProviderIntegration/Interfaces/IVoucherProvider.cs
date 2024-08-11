@@ -9,5 +9,5 @@ public interface IVoucherProvider
     Task<VoucherDto> GetVoucherDetailsAsync(string voucherId);
     Task<SelectVoucherMessage.SelectVoucherResponse> SelectVoucherAndAmountAsync(string voucherId, int amount);
     Task<bool> AddToCartAsync(VoucherDto voucher);
-    Task<bool> CheckoutAsync();
+    Task<CheckoutMessage.CheckoutResponse> CheckoutAsync();
 }

@@ -33,8 +33,10 @@ public class VoucherService : IVoucherService
         return response.Message.SelectedVoucher;
     }
 
-    public async Task Checkout(int cartId)
+    public async Task<bool> Checkout()
     {
-        await _checkoutClient.GetResponse<CheckoutMessage.CheckoutResponse>(new CheckoutMessage.CheckoutRequest(cartId));
+        var result = await _checkoutClient.GetResponse<CheckoutMessage.CheckoutResponse>(new CheckoutMessage.CheckoutRequest());
+
+        return result.Message.Success;
     }
 }
